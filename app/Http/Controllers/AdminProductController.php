@@ -10,7 +10,7 @@ class AdminProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::paginate(10); // Sử dụng paginate thay vì all()
         return view('admin.products.index', compact('products'));
     }
 

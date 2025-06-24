@@ -133,13 +133,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)
+                        @forelse ($products as $product)
                             <tr>
                                 <td class="fw-bold">#{{ $product->id }}</td>
                                 <td>
                                     <div class="d-flex flex-column">
                                         <span>{{ $product->name }}</span>
-                                        <small class="text-muted">{{ Str::limit($product->description, 50) ?? 'Chưa có mô tả' }}</small>
+                                        <small class="text-muted">{{ $product->description ? Str::limit($product->description, 50) : 'Chưa có mô tả' }}</small>
                                     </div>
                                 </td>
                                 <td class="text-nowrap">{{ number_format($product->price, 0, ',', '.') }} ₫</td>
@@ -180,13 +180,17 @@
                                     </form>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">Không có sản phẩm nào.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
             
-            <!-- Thêm phân trang nếu cần -->
-            @if ($products->hasPages())
+            <!-- Phân trang -->
+            @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator && $products->hasPages())
                 <div class="mt-4">
                     {{ $products->links() }}
                 </div>
@@ -196,7 +200,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Thêm hiệu ứng tooltip
         document.addEventListener('DOMContentLoaded', function() {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

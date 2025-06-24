@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Cart;
-use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -16,11 +15,13 @@ class CartController extends Controller
     }
 
     public function remove($id)
-  {
-    $cart = Cart::where('user_id', Auth::id())->where('id', $id)->firstOrFail();
-    $product = $cart->product;
-    $cart->delete();
-    $product->increment('stock', $cart->quantity); // Tăng stock khi xóa
-    return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
-  }
+    {
+        $cart = Cart::where('user_id', Auth::id())->where('id', $id)->first();
+        if ($cart) {
+            $product = $cart->product;
+            $product->increment('stock', $cart->quantity); // Hoàn lại stock
+            $cart->delete();
+        }
+        return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
+    }
 }
