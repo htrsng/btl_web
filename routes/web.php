@@ -41,11 +41,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     });
 
-    // Routes cho admin (role 'admin') - dùng 'auth' tạm thời
-    Route::middleware(['auth'])->group(function () {
+    // Routes cho admin (role 'admin')
+    Route::middleware(['can:admin'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::get('/admin/products/create', [AdminProductController::class, 'create'])->name('products.create');
         Route::post('/admin/products', [AdminProductController::class, 'store'])->name('products.store');
+        Route::get('/admin/products', [AdminProductController::class, 'index'])->name('admin.products.index');
+        Route::get('/admin/products/{id}', [AdminProductController::class, 'show'])->name('admin.products.show'); // Thêm route này
         Route::get('/admin/products/{id}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
         Route::put('/admin/products/{id}', [AdminProductController::class, 'update'])->name('products.update');
         Route::delete('/admin/products/{id}', [AdminProductController::class, 'destroy'])->name('products.destroy');

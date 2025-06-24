@@ -16,7 +16,7 @@ class AdminProductController extends Controller
 
     public function create()
     {
-        $categories = Category::all(); // Lấy tất cả danh mục
+        $categories = Category::all();
         return view('admin.products.create', compact('categories'));
     }
 
@@ -28,6 +28,7 @@ class AdminProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'stock' => 'required|integer|min:0',
             'image' => 'image|max:2048',
+            'description' => 'nullable|string',
         ], [
             'name.required' => 'Tên sản phẩm không được để trống.',
             'price.required' => 'Giá không được để trống.',
@@ -41,7 +42,7 @@ class AdminProductController extends Controller
         }
 
         Product::create($data);
-        return redirect()->route('products.index')->with('success', 'Sản phẩm đã được thêm.');
+        return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được thêm.');
     }
 
     public function show($id)
@@ -53,7 +54,8 @@ class AdminProductController extends Controller
     public function edit($id)
     {
         $product = Product::with('category')->findOrFail($id);
-        return view('admin.products.edit', compact('product'));
+        $categories = Category::all();
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -66,6 +68,7 @@ class AdminProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'stock' => 'required|integer|min:0',
             'image' => 'image|max:2048',
+            'description' => 'nullable|string',
         ]);
 
         $data = $request->all();
@@ -74,13 +77,13 @@ class AdminProductController extends Controller
         }
 
         $product->update($data);
-        return redirect()->route('products.index')->with('success', 'Sản phẩm đã được cập nhật.');
+        return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được cập nhật.');
     }
 
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return redirect()->route('products.index')->with('success', 'Sản phẩm đã được xóa.');
+        return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được xóa.');
     }
 }

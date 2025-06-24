@@ -18,6 +18,10 @@
                     <th>ID</th>
                     <th>Tên</th>
                     <th>Giá</th>
+                    <th>Danh mục</th>
+                    <th>Số lượng tồn kho</th>
+                    <th>Mô tả</th>
+                    <th>Hình ảnh</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -27,6 +31,16 @@
                         <td>{{ $product->id }}</td>
                         <td>{{ $product->name }}</td>
                         <td>{{ number_format($product->price, 0, ',', '.') }} VNĐ</td>
+                        <td>{{ $product->category->name ?? 'Chưa có' }}</td>
+                        <td>{{ $product->stock }}</td>
+                        <td>{{ $product->description ?? 'Chưa có' }}</td>
+                        <td>
+                            @if ($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="50">
+                            @else
+                                Không có ảnh
+                            @endif
+                        </td>
                         <td>
                             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                             <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
