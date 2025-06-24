@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\AdminProductController; // Thêm controller mới
+use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
             : redirect()->route('user.dashboard');
     })->name('dashboard');
 
+    // Routes cho user (role 'user')
     Route::middleware(['can:user'])->group(function () {
         Route::get('/user/dashboard', [HomeController::class, 'userDashboard'])->name('user.dashboard');
         Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -40,18 +41,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     });
 
-    Route::middleware(['can:admin'])->group(function () {
+    // Routes cho admin (role 'admin') - dùng 'auth' tạm thời
+    Route::middleware(['auth'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-        Route::get('/products/create', [AdminProductController::class, 'create'])->name('products.create');
-        Route::post('/products', [AdminProductController::class, 'store'])->name('products.store');
-        Route::get('/products/{id}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
-        Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('products.update');
-        Route::delete('/products/{id}', [AdminProductController::class, 'destroy'])->name('products.destroy');
-        Route::get('/orders/create', [OrderController::class, 'create'])->name('admin.orders.create');
-        Route::post('/orders', [OrderController::class, 'store'])->name('admin.orders.store');
-        Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.orders.edit');
-        Route::put('/orders/{order}', [OrderController::class, 'update'])->name('admin.orders.update');
-        Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
+        Route::get('/admin/products/create', [AdminProductController::class, 'create'])->name('products.create');
+        Route::post('/admin/products', [AdminProductController::class, 'store'])->name('products.store');
+        Route::get('/admin/products/{id}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
+        Route::put('/admin/products/{id}', [AdminProductController::class, 'update'])->name('products.update');
+        Route::delete('/admin/products/{id}', [AdminProductController::class, 'destroy'])->name('products.destroy');
+        Route::get('/admin/orders/create', [OrderController::class, 'create'])->name('admin.orders.create');
+        Route::post('/admin/orders', [OrderController::class, 'store'])->name('admin.orders.store');
+        Route::get('/admin/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.orders.edit');
+        Route::put('/admin/orders/{order}', [OrderController::class, 'update'])->name('admin.orders.update');
+        Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
     });
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

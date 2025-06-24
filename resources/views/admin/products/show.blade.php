@@ -11,6 +11,7 @@
         <p><strong>Tên:</strong> {{ $product->name }}</p>
         <p><strong>Giá:</strong> {{ number_format($product->price, 0, ',', '.') }} VNĐ</p>
         <p><strong>Danh mục:</strong> {{ $product->category->name ?? 'Chưa có' }}</p>
+        <p><strong>Mô tả:</strong> {{ $product->description ?? 'Chưa có' }}</p> <!-- Thêm mô tả -->
         <a href="{{ route('products.index') }}" class="btn btn-secondary">Quay lại</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

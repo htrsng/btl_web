@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class AdminProductController extends Controller
 {
@@ -15,7 +16,8 @@ class AdminProductController extends Controller
 
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::all(); // Lấy tất cả danh mục
+        return view('admin.products.create', compact('categories'));
     }
 
     public function store(Request $request)

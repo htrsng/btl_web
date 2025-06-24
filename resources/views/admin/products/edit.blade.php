@@ -48,8 +48,12 @@
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="100">
                 @endif
             </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Mô tả (tùy chọn)</label>
+                <textarea name="description" id="description" class="form-control" placeholder="Mô tả sản phẩm">{{ old('description', $product->description) }}</textarea>
+            </div>
             <button type="submit" class="btn btn-primary">Cập nhật</button>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">Hủy</a> <!-- Sửa lại route từ admin.dashboard thành products.index -->
+            <a href="{{ route('products.index') }}" class="btn btn-secondary">Hủy</a>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
