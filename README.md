@@ -91,9 +91,9 @@ Các bảng chính (được migrate qua Eloquent):
 
 ---
 ## Sơ đồ khối 
-ảnh 
+![Giao diện trang chủ](public/img/sodokhoi.png)
 ## Sơ đồ chức năng 
-ảnh 
+![Giao diện trang chủ](public/img/sodochucnang.png)
 
 ## 4. Một số code minh họa 
 **MODLE**
