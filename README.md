@@ -1,64 +1,111 @@
-# 🌸 Ứng dụng Web Quản Lý Cửa Hàng Hoa
-
-# Họ và tên sinh viên : Nguyễn Thị Huyền Trang 
-# Mã sinh viên : 23010181
----
+# Flower Shop Web App - Laravel Project 🌸
 
 ## 1. Giới thiệu
 
-Dự án xây dựng một ứng dụng web quản lý cửa hàng hoa sử dụng framework **Laravel**.
-Ứng dụng gồm ba đối tượng chính:
+Dự án xây dựng một ứng dụng web quản lý cửa hàng hoa sử dụng **framework Laravel (12.x)**, đáp ứng các yêu cầu thiết kế ứng dụng web theo tiêu chuẩn học tập.
 
-- `User`: Quản lý người dùng và phân quyền (admin/user).
-- `Product`: Quản lý sản phẩm (tên, giá, danh mục).
-- `Order`: Quản lý đơn hàng, bao gồm chức năng **CRUD**.
+Ứng dụng tập trung vào việc quản lý 3 đối tượng chính:
+- **User**
+- **Product**
+- **Order**
+
+Bao gồm các chức năng:
+- Xác thực và phân quyền người dùng (Admin/User)
+- Chức năng CRUD cho sản phẩm và đơn hàng
 
 ---
 
 ## 2. Yêu cầu và phân tích
 
-- **Framework**: Laravel (với Breeze cho xác thực).
-- **Đối tượng chính**:
-  - `User`: Đăng nhập, phân quyền.
-  - `Product`: Tên, giá, danh mục.
-  - `Order`: Gắn với user và product.
+### 2.1. Yêu cầu kỹ thuật
 
+- **Framework**: Laravel 12.x + Breeze
 - **Chức năng chính**:
-  - Đăng nhập / xác thực (authentication + authorization).
-  - CRUD cho `Order`.
+  - Xác thực & phân quyền (Auth/AuthZ) với Breeze
+  - CRUD cho Order
+- **Bảo mật**:
+  - CSRF Protection với `@csrf`
+  - XSS Prevention với `{{ e() }}`
+  - Validation với Laravel `rules`
+  - Middleware Auth & Role
+  - SQL Injection: phòng chống qua Eloquent & Query Builder
+- **Database**: Aiven for MySQL (cloud)
+- **Migrate**: sử dụng Eloquent ORM
 
-- **Security**:
-  - CSRF protection.
-  - XSS prevention.
-  - Data validation.
-  - Session & cookies.
-  - SQL Injection bảo vệ thông qua query builder.
+### 2.2. Phân tích đối tượng
+
+- **User**
+  - Đăng nhập, phân quyền (admin/user)
+- **Product**
+  - Quản lý tên, giá, danh mục
+- **Order**
+  - Quản lý đơn hàng: liên kết với User & Product
+  - Trạng thái: `pending`, `confirmed`, `completed`
 
 ---
 
 ## 3. Thiết kế và triển khai
 
-- **Cơ sở dữ liệu**: Sử dụng Aiven for MySQL, migrate qua Eloquent ORM.
+### 3.1. Cơ sở dữ liệu (MySQL - Aiven)
 
-### Cấu trúc bảng:
+Các bảng chính (được migrate qua Eloquent):
 
-- `users`: `id`, `name`, `email`, `password`, `role`, `email_verified_at`, `timestamps`.
-- `products`: `id`, `name`, `price`, `category_id`, `timestamps`.
-- `orders`: `id`, `user_id`, `product_id`, `quantity`, `status`, `timestamps`.
+#### `users` table
+| Tên cột           | Kiểu dữ liệu      |
+|-------------------|-------------------|
+| id                | integer, PK        |
+| name              | varchar            |
+| email             | varchar            |
+| password          | varchar            |
+| role              | varchar            |
+| email_verified_at | timestamp          |
+| created_at        | timestamp          |
+| updated_at        | timestamp          |
 
-### Controllers:
+#### `products` table
+| Tên cột   | Kiểu dữ liệu      |
+|-----------|-------------------|
+| id        | integer, PK        |
+| name      | varchar            |
+| price     | decimal            |
+| category_id | integer, FK     |
+| created_at | timestamp        |
+| updated_at | timestamp        |
 
-- `LoginController`: Xử lý đăng nhập / đăng xuất.
-- `OrderController`: CRUD đơn hàng.
-
-### Routes:
-
-- Định nghĩa trong `routes/web.php`.
-- Áp dụng `middleware: auth` và `role`.
-
-### View:
-
-- Blade Template Engine.
-- Giao diện kế thừa từ `layouts/app.blade.php`.
+#### `orders` table
+| Tên cột   | Kiểu dữ liệu      |
+|-----------|-------------------|
+| id        | integer, PK        |
+| user_id   | integer, FK        |
+| product_id | integer, FK       |
+| quantity  | integer            |
+| status    | varchar            |
+| created_at | timestamp         |
+| updated_at | timestamp         |
 
 ---
+
+### 3.2. Controllers
+
+- `LoginController`:
+  - Xử lý đăng nhập, đăng xuất (Breeze)
+- `OrderController`:
+  - `index`: Danh sách đơn hàng
+  - `store`: Tạo đơn hàng
+  - `update`: Cập nhật đơn hàng
+  - `destroy`: Xóa đơn hàng
+
+---
+
+### 3.3. Routes (`routes/web.php`)
+
+```php
+Route::middleware('guest')->get('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout']);
+
+Route::middleware(['auth', 'role'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::put('/orders/{id}', [OrderController::class, 'update']);
+    Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
+});
