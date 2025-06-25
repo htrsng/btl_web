@@ -512,6 +512,36 @@ class AdminController extends Controller
 **github link** : https://github.com/htrsng/btl_web
 
 
+## 8. Cài đặt và Chạy thử
+
+Dưới đây là hướng dẫn chi tiết để cài đặt và chạy thử ứng dụng web quản lý cửa hàng hoa trên máy local của bạn. Ứng dụng sử dụng Laravel framework và kết nối với Aiven for MySQL.
+
+### 8.1. Yêu cầu hệ thống
+- PHP >= 8.1
+- Composer (https://getcomposer.org/)
+- Node.js và NPM (nếu có frontend tùy chỉnh)
+- Git (https://git-scm.com/)
+- Một tài khoản Aiven (https://aiven.io/) để sử dụng MySQL
+
+### 8.2. Các bước cài đặt
+1. **Clone repository**:
+   - Mở terminal và clone dự án từ Git repository:
+     ```
+     https://github.com/htrsng/btl_web.git
+     cài đặt các gói PHP thông qua composer:
+     composer install
+     npm install
+     npm run build  
+     php artisan key:generate
+     php artisan migrate
+     ```
+     Hãy tạo 1 server SQL trên aiven để có thể dùng trong dự án hoặc tự tạo 1 server với xampp hoặc docker trên máy tính cá nhân của bạn
+
+     sau đó khởi động server local:
+     ```
+     php artisan serve
+     ```
+
 
 
 
