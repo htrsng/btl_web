@@ -534,8 +534,9 @@ Dưới đây là hướng dẫn chi tiết để cài đặt và chạy thử �
      npm run build  
      php artisan key:generate
      php artisan migrate
+     cp .env.example .env
      ```
-     Hãy tạo 1 server SQL trên aiven để có thể dùng trong dự án hoặc tự tạo 1 server với xampp hoặc docker trên máy tính cá nhân của bạn
+     Mở file .env bằng trình soạn thảo (như VS Code) và cập nhật thông tin cơ sở dữ liệu. Hãy tạo 1 server SQL trên aiven để có thể dùng trong dự án hoặc tự tạo 1 server với xampp hoặc docker trên máy tính cá nhân của bạn
 
      sau đó khởi động server local:
      ```
