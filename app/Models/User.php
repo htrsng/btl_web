@@ -40,4 +40,8 @@ class User extends Authenticatable
     {
         return $this->role === self::ROLE_USER;
     }
+    public function orders()
+    {
+        return $this->hasMany(Order::class); // Đảm bảo model Order tồn tại
+    }
 }

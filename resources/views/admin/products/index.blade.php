@@ -99,6 +99,17 @@
 </head>
 <body>
     <div class="container mt-4">
+        <!-- Menu điều hướng -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Admin</a>
+                <div class="navbar-nav">
+                    <a class="nav-link active" href="{{ route('admin.products.index') }}">Quản lý sản phẩm</a>
+                    <a class="nav-link" href="{{ route('admin.orders.index') }}">Quản lý đơn hàng</a>
+                </div>
+            </div>
+        </nav>
+
         <div class="dashboard-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div>

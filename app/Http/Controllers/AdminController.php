@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-        return view('admin.dashboard', compact('products'));
+        $products = Product::all(); // Lấy tất cả sản phẩm (hoặc tùy chỉnh query nếu cần)
+        Log::info('Admin Dashboard accessed with ' . $products->count() . ' products');
+        return view('admin.dashboard', compact('products')); // Truyền biến $products
     }
 
     public function create()

@@ -4,7 +4,7 @@
 
   use Illuminate\Http\Request;
   use Illuminate\Support\Facades\Auth;
-
+    use Illuminate\Support\Facades\Log;
 
   class HomeController extends Controller
   {
@@ -14,9 +14,10 @@
       }
 
       public function userDashboard()
-      {
-          return view('user.dashboard');
-      }
+    {
+    Log::info('User Dashboard accessed');
+    return view('user.dashboard'); // Đảm bảo view user/dashboard.blade.php tồn tại
+    }
 
       public function logout()
       {
