@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 class Product extends Model
 {
     protected $fillable = ['name', 'price', 'stock', 'image', 'category_id'];
@@ -20,8 +21,4 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function feedbacks(): HasMany
-    {
-        return $this->hasMany(Feedback::class);
-    }
 }

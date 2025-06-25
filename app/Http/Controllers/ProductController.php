@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    /**
-     * Hiển thị danh sách sản phẩm.
-     */
     public function index()
     {
         $products = Product::with('category')->get();
@@ -21,9 +18,6 @@ class ProductController extends Controller
         return view('user.products.index', compact('products'));
     }
 
-    /**
-     * Thêm sản phẩm vào giỏ hàng và giảm stock.
-     */
     public function addToCart($id, Request $request)
 {
     $product = Product::findOrFail($id);
@@ -44,9 +38,7 @@ class ProductController extends Controller
     return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
 }
 
-    /**
-     * Hiển thị chi tiết sản phẩm.
-     */
+
     public function show($id)
     {
         $product = Product::with('category')->findOrFail($id);
