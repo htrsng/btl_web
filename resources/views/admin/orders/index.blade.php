@@ -28,6 +28,8 @@
                         <th>Tổng tiền</th>
                         <th>Trạng thái</th>
                         <th>Thời gian giao</th>
+                        <th>Ghi chú (Yêu cầu)</th>
+                        <th>Phản hồi từ Admin</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -44,16 +46,24 @@
                                     'bg-warning text-dark': $order->status == 'pending',
                                     'bg-danger': $order->status == 'canceled',
                                     'bg-info': $order->status == 'completed'
-                                }">{{ $order->status }}</span>
+                                }">{{ ucfirst($order->status) }}</span>
                             </td>
-                            <td>{{ $order->delivery_time ? (\Carbon\Carbon::parse($order->delivery_time)->format('d/m/Y H:i') ?? 'Chưa xác định') : 'Chưa xác định' }}</td>
                             <td>
-                                <a href="{{ route('admin.orders.confirm', $order->id) }}" class="btn btn-sm btn-outline-primary">Xác nhận</a>
+                                {{ $order->delivery_time ? (\Carbon\Carbon::parse($order->delivery_time)->format('d/m/Y H:i') ?? 'Chưa xác định') : 'Chưa xác định' }}
+                            </td>
+                            <td>
+                                {{ $order->requirements ? nl2br(e($order->requirements)) : 'Không có yêu cầu' }}
+                            </td>
+                            <td>
+                                {{ $order->admin_reply ? nl2br(e($order->admin_reply)) : 'Chưa có phản hồi' }}
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-sm btn-outline-primary">Sửa</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center">Không có đơn hàng nào.</td>
+                            <td colspan="9" class="text-center">Không có đơn hàng nào.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -12,14 +12,20 @@ class Order extends Model
         'address',
         'phone',
         'total',
-        'requirements', // Đảm bảo thêm dòng này
+        'requirements',
         'status',
         'delivery_time',
+        'admin_reply',
     ];
 
-    // Quan hệ nếu có
+    // Quan hệ
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    // Cast delivery_time thành datetime
+    protected $casts = [
+        'delivery_time' => 'datetime',
+    ];
 }

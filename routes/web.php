@@ -9,9 +9,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CartController;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 // Routes công khai (không cần auth)
@@ -61,10 +61,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
         Route::get('/admin/orders/{id}/confirm', [AdminOrderController::class, 'confirm'])->name('admin.orders.confirm');
         Route::put('/admin/orders/{id}', [AdminOrderController::class, 'update'])->name('admin.orders.update');
+        Route::get('/admin/orders/{id}/edit', [AdminOrderController::class, 'edit'])->name('admin.orders.edit');
     });
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-    // Route mới cho giao tiếp
-    Route::post('/admin/orders/{id}/reply', [AdminOrderController::class, 'reply'])->name('admin.orders.reply');
 });
