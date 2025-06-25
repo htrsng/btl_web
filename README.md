@@ -447,49 +447,70 @@ class AdminController extends Controller
 
 ## 5 Một số hình ảnh giao diện
 **Trang chủ**
-![Giao diện trang chủ](public/images/trangchur.png)
+![Giao diện trang chủ](public/img/trangchur.png)
 
 **Trang đăng nhập**
-![Giao diện trang chủ](public/images/trangdangnhap.png)
+![Giao diện trang chủ](public/img/trangdangnhap.png)
 
 **Trang đăng kí**
-![Giao diện trang chủ](public/images/trangdangki.png)
+![Giao diện trang chủ](public/img/trangdangki.png)
 
 **Trang admin**
-![Giao diện trang chủ](public/images/trangadmin.png)
+![Giao diện trang chủ](public/img/trangadmin.png)
 
 **Trang admin**
-![Giao diện trang chủ](public/images/them-sua-xoa.png)
+![Giao diện trang chủ](public/img/them-sua-xoa.png)
 
 **Thêm sản phẩm**
-![Giao diện trang chủ](public/images/themsp.png)
+![Giao diện trang chủ](public/img/themsp.png)
 
 **Sửa sản phẩm**
-![Giao diện trang chủ](public/images/suasp.png)
+![Giao diện trang chủ](public/img/suasp.png)
 
 **Xóa sản phẩm**
-![Giao diện trang chủ](public/images/xoasp.png)
+![Giao diện trang chủ](public/img/xoasp.png)
 
 **Quản lý đơn hàng**
-![Giao diện trang chủ](public/images/qldonhang.png)
+![Giao diện trang chủ](public/img/qldonhang.png)
 
 **Trang chủ user**
-![Giao diện trang chủ](public/images/tranguser.png)
+![Giao diện trang chủ](public/img/tranguser.png)
 
 **Xem sản phẩm**
-![Giao diện trang chủ](public/images/xemsp.png)
+![Giao diện trang chủ](public/img/xemsp.png)
 
 **Thêm vào giỏ hàng**
-![Giao diện trang chủ](public/images/themgiohang.png)
+![Giao diện trang chủ](public/img/themgiohang.png)
 
 **Đặt hàng**
-![Giao diện trang chủ](public/images/dathang.png)
+![Giao diện trang chủ](public/img/dathang.png)
 
 **Chờ xác nhận đơn hàng**
-![Giao diện trang chủ](public/images/choxacnhan.png)
+![Giao diện trang chủ](public/img/choxacnhan.png)
 
 **Cập nhật đơn hàng ở admin**
-![Giao diện trang chủ](public/images/capnhatdonhang.png)
+![Giao diện trang chủ](public/img/capnhatdonhang.png)
+
+## 6. Security 
+- **CSRF Protection (Bảo vệ chống Cross-Site Request Forgery)**:
+  - Sử dụng token `@csrf` trong tất cả các form (ví dụ: form đặt hàng trong `user.orders.create.blade.php`), đảm bảo các request POST/PUT/DELETE được xác thực bởi Laravel middleware.
+- **XSS Prevention (Bảo vệ chống Cross-Site Scripting)**:
+  - Áp dụng Blade escaping với `{{ }}` để tự động thoát HTML trong các view (ví dụ: hiển thị tên sản phẩm và giá trong `user.orders.create.blade.php`), ngăn chặn việc chèn script độc hại.
+- **Data Validation**:
+  - Thực hiện validation phía server trong `OrderController` (ví dụ: `store` và `adminStore`) với rules như `required`, `max:255`, và `regex:/^[0-9]{10,11}$/` cho số điện thoại, đảm bảo dữ liệu đầu vào an toàn.
+- **Authentication (Xác thực)**:
+  - Sử dụng Laravel Breeze để cung cấp cơ chế đăng nhập/đăng xuất an toàn trong `LoginController`, với `Auth::attempt()` và `session()->regenerate()` để ngăn session fixation.
+- **Authorization (Phân quyền)**:
+  - Áp dụng middleware `auth` và kiểm tra `role` trong `OrderController@show` để giới hạn quyền truy cập, đảm bảo chỉ admin hoặc chủ đơn hàng có thể xem thông tin.
+- **Session & Cookies Management**:
+  - Quản lý session an toàn với `session()->invalidate()` và `session()->regenerateToken()` trong `LoginController@logout`, giảm nguy cơ session hijacking.
+- **SQL Injection Protection**:
+  - Sử dụng Eloquent ORM trong `OrderController` (ví dụ: `Order::create()`, `Product::findOrFail()`) để tránh các truy vấn SQL thô, bảo vệ chống SQL Injection.
+
+
+## 7 . Dự án 
+**github link** : https://github.com/htrsng/btl_web
+
 
 
 
