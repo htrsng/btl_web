@@ -13,9 +13,22 @@ class CategorySeeder extends Seeder
             'name' => 'Hoa Hồng',
             'description' => 'Hoa biểu tượng của tình yêu',
         ]);
+        
         Category::create([
-            'name' => 'Hoa Cẩm Chướng',
-            'description' => 'Hoa tượng trưng cho sự ngưỡng mộ',
+            'name' => 'Hoa Tulip',
+            'description' => 'Hoa biểu tượng của sự thanh lịch',
+        ]);
+        Category::create([
+            'name' => 'Hoa Cẩm Tú Cầu',
+            'description' => 'Hoa biểu tượng của sự chân thành',
+        ]);
+        Category::create([
+            'name' => 'Hoa Sen',
+            'description' => 'Hoa biểu tượng của sự thanh khiết',
+        ]);
+        Category::create([
+            'name' => 'Hoa Hương Dương',
+            'description' => 'Hoa biểu tượng của sự tươi sáng',
         ]);
     }
 }

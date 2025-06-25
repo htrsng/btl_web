@@ -1,7 +1,7 @@
 # 🌸 Ứng dụng Web Quản Lý Cửa Hàng Hoa
 
-## Họ và tên sinh viên : Nguyễn Thị Huyền Trang 
-## Mã sinh viên : 23010181
+# Họ và tên sinh viên : Nguyễn Thị Huyền Trang 
+# Mã sinh viên : 23010181
 ---
 
 ## 1. Giới thiệu

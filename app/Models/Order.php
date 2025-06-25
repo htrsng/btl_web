@@ -23,7 +23,7 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    
     // Cast delivery_time thành datetime
     protected $casts = [
         'delivery_time' => 'datetime',
