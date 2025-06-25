@@ -21,39 +21,42 @@ class OrderController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name'    => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'phone'   => 'required|string|regex:/^[0-9]{10,11}$/',
-        ], [
-            'name.required'    => 'Vui lòng nhập tên.',
-            'address.required' => 'Vui lòng nhập địa chỉ.',
-            'phone.required'   => 'Vui lòng nhập số điện thoại.',
-            'phone.regex'      => 'Số điện thoại không hợp lệ (10-11 số).',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+        'phone' => 'required|string|regex:/^[0-9]{10,11}$/',
+        'requirements' => 'nullable|string|max:500',
+    ], [
+        'name.required' => 'Vui lòng nhập tên.',
+        'address.required' => 'Vui lòng nhập địa chỉ.',
+        'phone.required' => 'Vui lòng nhập số điện thoại.',
+        'phone.regex' => 'Số điện thoại không hợp lệ (10-11 số).',
+        'requirements.max' => 'Yêu cầu không được vượt quá 500 ký tự.',
+    ]);
 
-        $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
-        $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
+    $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+    $total = $cartItems->sum(function ($item) {
+        return $item->product->price * $item->quantity;
+    });
 
-        $order = Order::create([
-            'user_id' => Auth::id(),
-            'name'    => $request->name,
-            'address' => $request->address,
-            'phone'   => $request->phone,
-            'total'   => $total,
-        ]);
+    $order = Order::create([
+        'user_id' => Auth::id(),
+        'name' => $request->name,
+        'address' => $request->address,
+        'phone' => $request->phone,
+        'total' => $total,
+        'requirements' => $request->requirements,
+    ]);
 
-        foreach ($cartItems as $item) {
-            $product = $item->product;
-            $product->decrement('stock', $item->quantity);
-            $item->delete();
-        }
-
-        return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được đặt thành công!');
+    foreach ($cartItems as $item) {
+        $product = $item->product;
+        $product->decrement('stock', $item->quantity);
+        $item->delete();
     }
+
+    return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được đặt thành công!');
+}
 
     public function index()
     {

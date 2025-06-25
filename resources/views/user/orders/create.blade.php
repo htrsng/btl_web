@@ -33,6 +33,10 @@
                 <label for="phone" class="form-label">Số Điện Thoại</label>
                 <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone') }}" required>
             </div>
+            <div class="mb-3">
+                <label for="requirements" class="form-label">Yêu Cầu Thêm (Tùy Chọn)</label>
+                <textarea name="requirements" id="requirements" class="form-control" maxlength="500" placeholder="Nhập yêu cầu của bạn...">{{ old('requirements') }}</textarea>
+            </div>
             <h4>Danh Sách Sản Phẩm</h4>
             @if ($cartItems->isNotEmpty())
                 <table class="table table-striped">

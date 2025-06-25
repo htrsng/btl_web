@@ -23,6 +23,8 @@
                         <th>Tổng tiền</th>
                         <th>Trạng thái</th>
                         <th>Thời gian giao</th>
+                        <th>Ghi chú (Yêu cầu)</th>
+                        <th>Phản hồi từ Admin</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -45,7 +47,13 @@
                                 </span>
                             </td>
                             <td>
-                                {{ $order->delivery_time ? $order->delivery_time->format('d/m/Y H:i') : 'Chưa xác định' }}
+                                {{ $order->delivery_time ? (is_string($order->delivery_time) ? \Carbon\Carbon::parse($order->delivery_time)->format('d/m/Y H:i') : $order->delivery_time->format('d/m/Y H:i')) : 'Chưa xác định' }}
+                            </td>
+                            <td>
+                                {{ $order->requirements ? nl2br(e($order->requirements)) : 'Không có yêu cầu' }}
+                            </td>
+                            <td>
+                                {{ $order->admin_reply ? nl2br(e($order->admin_reply)) : 'Chưa có phản hồi' }}
                             </td>
                             <td>
                                 <a href="{{ route('orders.show', $order->id) }}" class="btn btn-info btn-sm">Xem chi tiết</a>

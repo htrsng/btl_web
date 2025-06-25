@@ -24,23 +24,25 @@ class ProductController extends Controller
     /**
      * Thêm sản phẩm vào giỏ hàng và giảm stock.
      */
-    public function addToCart($id)
-    {
-        $product = Product::findOrFail($id);
-        if ($product->stock <= 0) {
-            return redirect()->back()->with('error', 'Sản phẩm đã hết hàng!');
-        }
+    public function addToCart($id, Request $request)
+{
+    $product = Product::findOrFail($id);
+    $quantity = $request->input('quantity', 1); // Nhận số lượng từ form, mặc định là 1
 
-        $cart = Cart::firstOrCreate(
-            ['user_id' => Auth::id(), 'product_id' => $product->id],
-            ['quantity' => 0]
-        );
-        $cart->increment('quantity');
-        $product->decrement('stock');
-        $product->save(); // Đảm bảo cập nhật stock
-
-        return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+    if ($quantity <= 0 || $quantity > $product->stock) {
+        return redirect()->back()->with('error', 'Số lượng không hợp lệ hoặc vượt quá tồn kho!');
     }
+
+    $cart = Cart::firstOrCreate(
+        ['user_id' => Auth::id(), 'product_id' => $product->id],
+        ['quantity' => 0]
+    );
+    $cart->update(['quantity' => $cart->quantity + $quantity]);
+    $product->decrement('stock', $quantity);
+    $product->save();
+
+    return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+}
 
     /**
      * Hiển thị chi tiết sản phẩm.
